@@ -122,12 +122,30 @@
     \begin{titlepage}
         \newpage
         \vbox to 30pt{%
-            \ifx\temp\@empty
-                \vfil % nothing, just stretch inside
-            \else
-                \includegraphics[height=30pt]{\pt@logo}%
+                \ifx\temp\@empty
+                    \vfil % nothing, just stretch inside
+                \else
+                    \includegraphics[height=30pt]{\pt@logo}%
+                \fi
+            }%
+        \vfill
+        \vfill
+        \begin{center}
+            \ifdefined\pt@classsemester%
+                \ifdefined\pt@classcode%
+                    \pt@classcode \ - \pt@classsemester\par%
+                \else%
+                    \pt@classsemester\par%
+                \fi%
+            \else%
+                \ifdefined\pt@classcode%
+                    \pt@classcode\par%
+                \fi%
+            \fi%
+            \ifdefined\pt@classname%
+                \pt@classname\par%
             \fi
-        }%
+        \end{center}
         \vfill
         \begin{center}
             {\Huge\pt@title}\\%
@@ -141,6 +159,57 @@
                 \pt@titlesubsub\\%
             \fi%
         \end{center}
+        \vfill
+        \begin{center}
+            \ifdefined\pt@date%
+                \edef\temp@date{\pt@date}%
+                \ifx\temp@date\@empty%
+                \else%
+                    \pt@date%
+                    \def\pt@dateprinted{true}%
+                \fi%
+            \else%
+                \insertdate%
+                \def\pt@dateprinted{true}%
+            \fi%
+            \ifdefined\pt@version%
+                \ifdefined\pt@dateprinted%
+                    \ -\ %
+                \fi%
+                \undef\pt@dateprinted%
+                v\pt@version%
+                \par%
+            \fi%
+            \ifdefined\pt@workgroup%
+                \def\pt@spacing{true}%
+            \fi%
+            \ifdefined\pt@department%
+                \def\pt@spacing{true}%
+            \fi%
+            \ifdefined\pt@school%
+                \def\pt@spacing{true}%
+            \fi%
+            \ifdefined\pt@university%
+                \def\pt@spacing{true}%
+            \fi%
+            \ifdefined\pt@spacing%
+                \vspace{0.42cm}%
+                \undef\pt@spacing
+            \fi%
+            \ifdefined\pt@workgroup%
+                \pt@workgroup\par%
+            \fi%
+            \ifdefined\pt@department%
+                \pt@department\par%
+            \fi%
+            \ifdefined\pt@school%
+                \pt@school\par%
+            \fi%
+            \ifdefined\pt@university%
+                \pt@university\par%
+            \fi%
+        \end{center}
+        \vfill
         \vfill
         \begin{flushright}
             \titleauthorstable
