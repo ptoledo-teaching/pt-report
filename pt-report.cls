@@ -43,19 +43,19 @@
 
 % Page geometry
 \geometry{
-    left=1.0in,
-    right=1.0in,
-    top=1.0in,
-    bottom=1.0in,
+    left=63pt,
+    right=63pt,
+    top=63pt,
+    bottom=63pt,
     includefoot
 }
 % Paragraph indentation
-\setlength{\parindent}{0.5in}
+\setlength{\parindent}{42pt}
 % Line spacing
 \sloppy
 % Lists spacing (use enumitem rather than redefining LaTeX internals)
 \setlist[itemize,1]{
-    leftmargin=21pt,
+    leftmargin=42pt,
     labelsep=6pt,
     topsep=8pt,
     parsep=0pt,
@@ -66,7 +66,7 @@
     topsep=0pt
 }
 \setlist[enumerate,1]{
-    leftmargin=21pt,
+    leftmargin=42pt,
     labelsep=6pt,
     topsep=8pt,
     parsep=0pt,
@@ -125,7 +125,7 @@
                 \ifx\temp\@empty
                     \vfil % nothing, just stretch inside
                 \else
-                    \includegraphics[height=30pt]{\pt@logo}%
+                    \noindent\includegraphics[height=30pt]{\pt@logo}%
                 \fi
             }%
         \vfill
