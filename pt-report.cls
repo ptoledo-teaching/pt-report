@@ -78,6 +78,8 @@
 }
 % Section breaks - each section starts on a new page
 \pretocmd{\section}{\clearpage}{}{}
+% Page numbering
+\pagestyle{fancy}
 
 % Watermark %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
