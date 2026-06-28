@@ -163,41 +163,7 @@
         \end{center}
         \vfill
         \begin{center}
-            \ifdefined\pt@date%
-                \edef\temp@date{\pt@date}%
-                \ifx\temp@date\@empty%
-                \else%
-                    \pt@date%
-                    \def\pt@dateprinted{true}%
-                \fi%
-            \else%
-                \insertdate%
-                \def\pt@dateprinted{true}%
-            \fi%
-            \ifdefined\pt@version%
-                \ifdefined\pt@dateprinted%
-                    \ -\ %
-                \fi%
-                \undef\pt@dateprinted%
-                v\pt@version%
-                \par%
-            \fi%
-            \ifdefined\pt@workgroup%
-                \def\pt@spacing{true}%
-            \fi%
-            \ifdefined\pt@department%
-                \def\pt@spacing{true}%
-            \fi%
-            \ifdefined\pt@school%
-                \def\pt@spacing{true}%
-            \fi%
-            \ifdefined\pt@university%
-                \def\pt@spacing{true}%
-            \fi%
-            \ifdefined\pt@spacing%
-                \vspace{0.42cm}%
-                \undef\pt@spacing
-            \fi%
+            % Institution information
             \ifdefined\pt@workgroup%
                 \pt@workgroup\par%
             \fi%
@@ -209,6 +175,13 @@
             \fi%
             \ifdefined\pt@university%
                 \pt@university\par%
+            \fi%
+            % Corporate information
+            \ifdefined\pt@corporationdepartment%
+                \pt@corporationdepartment\par%
+            \fi%
+            \ifdefined\pt@corporation%
+                \pt@corporation\par%
             \fi%
         \end{center}
         \vfill
