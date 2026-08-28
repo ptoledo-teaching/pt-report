@@ -154,7 +154,7 @@
             \ifdefined\pt@titlesub\vspace{6pt}{\LARGE\pt@titlesub}\\%
             \fi%
             \ifdefined\pt@titlesubsub%
-                \vspace{10pt}%
+                \vspace{14pt}%
                 \ifdefined\pt@watermark%
                     \pt@watermark\ -%
                 \fi%
@@ -163,6 +163,36 @@
         \end{center}
         \vfill
         \begin{center}
+            % Date and version
+            \ifdefined\pt@date%
+                \edef\temp@date{\pt@date}%
+                \ifx\temp@date\@empty%
+                \else%
+                    \pt@date%
+                    \def\pt@dateprinted{true}%
+                    \def\pt@dateversionprinted{true}%
+                \fi%
+            \else%
+                \@date%
+                \def\pt@dateprinted{true}%
+                \def\pt@dateversionprinted{true}%
+            \fi%
+            \ifdefined\pt@version%
+                \edef\temp@version{\pt@version}%
+                \ifx\temp@version\@empty%
+                \else%
+                    \ifdefined\pt@dateprinted%
+                        \ -\ %
+                    \fi%
+                    v\pt@version%
+                    \def\pt@dateversionprinted{true}%
+                \fi%
+            \fi%
+            \undef\pt@dateprinted%
+            \ifdefined\pt@dateversionprinted%
+                \par\vspace{21pt}%
+                \undef\pt@dateversionprinted%
+            \fi%
             % Institution information
             \ifdefined\pt@workgroup%
                 \pt@workgroup\par%
