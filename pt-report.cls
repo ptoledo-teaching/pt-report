@@ -3,11 +3,11 @@
 %% Report document class for ptoledo-teaching
 %%
 %% Author: Pedro Toledo Correa
-%% Repo: https://github.com/ptoledo-teaching/pt-commons
+%% Repo: https://github.com/ptoledo-teaching/pt-report
 %% License: LaTeX Project Public License 1.3c or later
 %% Created: 2021-07-01
-%% Updated: 2025-10-18
-%% Version: v0.1
+%% Updated: 2026-08-28
+%% Version: v0.2
 %%
 %% -----------------------------------------------------------------
 %% This work may be distributed and/or modified under
@@ -17,8 +17,8 @@
 %% -----------------------------------------------------------------
 %%
 
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{pt-report}[2025/10/18 v0.1 PT Report Class]
+\NeedsTeXFormat{LaTeX2e}[2023-06-01]
+\ProvidesClass{pt-report}[2026/08/28 v0.2 PT Report Class]
 \makeatletter
 
 % Class handling %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,15 +29,47 @@
 \DeclareOption{portuguese}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
 \DeclareOption{french}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
 \DeclareOption{nominted}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+\DeclareOption{coreonly}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+\DeclareOption{minimal}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+\DeclareOption{full}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+\DeclareOption{layout}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+\DeclareOption{nolayout}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+\DeclareOption{content}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+\DeclareOption{nocontent}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+\DeclareOption{runtime}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+\DeclareOption{noruntime}{\PassOptionsToPackage{\CurrentOption}{pt-commons}}
+% Apply the 12pt default only when the user did not request another size.
+\newif\ifpt@reportsizeoption
+\pt@reportsizeoptionfalse
+\DeclareOption{10pt}{%
+    \pt@reportsizeoptiontrue
+    \PassOptionsToClass{\CurrentOption}{article}%
+}
+\DeclareOption{11pt}{%
+    \pt@reportsizeoptiontrue
+    \PassOptionsToClass{\CurrentOption}{article}%
+}
+\DeclareOption{12pt}{%
+    \pt@reportsizeoptiontrue
+    \PassOptionsToClass{\CurrentOption}{article}%
+}
 % Pass all other options to base article class
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 % Default options
-\PassOptionsToClass{letterpaper,12pt}{article}
-\ProcessOptions\relax
+\ProcessOptions*\relax
+\ifpt@reportsizeoption\else
+    \PassOptionsToClass{12pt}{article}
+\fi
 % Load base class
 \LoadClass{article}
 % Load pt-commons package
 \RequirePackage{pt-commons}
+
+% Direct class dependencies remain available when Commons modules are disabled.
+\RequirePackage{enumitem}
+\RequirePackage{fancyhdr}
+\RequirePackage{geometry}
+\RequirePackage{graphicx}
 
 % Page and text formatting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -80,41 +112,12 @@
 \pretocmd{\section}{\clearpage}{}{}
 % Page numbering
 \pagestyle{fancy}
-
-% Watermark %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\renewcommand{\setupwatermark}[1]{%
-    \newlength{\@watermarkheight}
-    \newlength{\@watermarklen}
-    \newlength{\@watermarktargetlen}
-    \newlength{\@watermarkwidth}
-    \newlength{\@watermarkfinal}
-    \begingroup
-    % Calculate the watermark size
-    \fontsize{5cm}{6cm}\selectfont
-    \settowidth{\@watermarkwidth}{#1}%
-    \settoheight{\@watermarkheight}{#1}%
-    % Choose the smaller dimension between watermark width and height
-    \ifdim\@watermarkwidth>\@watermarkheight
-        \global\setlength{\@watermarklen}{\@watermarkwidth}%
-    \else
-        \global\setlength{\@watermarklen}{\@watermarkheight}%
-    \fi
-    \endgroup
-    % Calculate the watermark target size
-    \ifdim\paperwidth<\paperheight
-        \setlength{\@watermarktargetlen}{1.2\paperwidth}%
-    \else
-        \setlength{\@watermarktargetlen}{1.2\paperheight}%
-    \fi
-    \setlength{\@watermarkfinal}{\dimexpr 4cm * \@watermarktargetlen / \@watermarklen \relax}
-    % Set watermark properties
-    \SetWatermarkText{#1}%
-    \SetWatermarkFontSize{\@watermarkfinal}%
-    \SetWatermarkAngle{45}%
-    \SetWatermarkColor{ptred!21}
-    \SetWatermarkHorCenter{0.5\paperwidth}
-}
+\ifpt@loadlayout\else
+    % Keep a quiet, useful page style when PT's optional layout is disabled.
+    \fancyhf{}
+    \cfoot{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+\fi
 
 % Title page %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -225,6 +228,8 @@
 
 % Hooks %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\AtBeginEnvironment{tblr}{\footnotesize}
+\ifpt@loadcontent
+    \AtBeginEnvironment{tblr}{\footnotesize}
+\fi
 
 \makeatother

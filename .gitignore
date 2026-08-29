@@ -7,6 +7,7 @@
 *.lot
 *.toc
 *.bld
+*.buildcount
 *-blx.bib
 *.run.xml
 *.bcf
@@ -18,4 +19,4 @@
 *.nav
 *.snm
 *.vrb
-_minted-*/
+_minted*/
