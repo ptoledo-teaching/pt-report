@@ -154,7 +154,8 @@
         \vfill
         \begin{center}
             {\Huge\pt@title}\\%
-            \ifdefined\pt@titlesub\vspace{6pt}{\LARGE\pt@titlesub}\\%
+            \ifdefined\pt@titlesub%
+                \vspace{14pt}{\LARGE\pt@titlesub}\\%
             \fi%
             \ifdefined\pt@titlesubsub%
                 \vspace{14pt}%
