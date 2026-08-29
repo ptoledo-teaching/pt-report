@@ -1,0 +1,37 @@
+% PT Report must preserve the public L/C/R/X column API supplied by Commons.
+\documentclass[nominted]{pt-report}
+\title{Table Column Contract}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{tblr}{
+  hlines,
+  vlines,
+  colspec={
+    L{0.19\linewidth}
+    C{0.19\linewidth}
+    R{0.19\linewidth}
+    X[l]{0.19\linewidth}
+  }
+}
+LSTART uno dos tres cuatro cinco seis siete ocho nueve diez LEND &
+CSTART uno dos tres cuatro cinco seis siete ocho nueve diez CEND &
+RSTART uno dos tres cuatro cinco seis siete ocho nueve diez REND &
+XSTART uno dos tres cuatro cinco seis siete ocho nueve diez XEND
+\\
+\end{tblr}
+
+\begin{tblr}{hlines,vlines,colspec={L{90pt}X}}
+Fixed &
+XFLEXSTART this flexible X column contains enough breakable words to require
+more than one line, including several additional words that must continue
+wrapping safely before its XFLEXEND marker.
+\\
+Placeholder &
+\inlinecode{bucket-<normalized-id>} remains literal inside the X column.
+\\
+\end{tblr}
+
+\end{document}

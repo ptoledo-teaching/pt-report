@@ -1,10 +1,10 @@
 %%
 %% PT Report Template
-%% Full-featured template demonstrating all capabilities
+%% Representative template for the PT Report class
 %%
 %% Author: Pedro Toledo Correa
-%% Version: 0.2
-%% Date: 2026-08-28
+%% Version: 0.3
+%% Date: 2026-08-29
 %%
 
 \documentclass{pt-report}
@@ -12,11 +12,18 @@
 % - Language: spanish (default), english, portuguese, french
 % - Code: nominted (disable minted, use verbatim)
 % - Font size: 10pt, 11pt, 12pt (default)
+% - Page sides: oneside (default) or twoside
+%   oneside: title page 1, content page 2
+%   twoside: title page 1, blank reverse page 2, content page 3
+% - Shared modules: coreonly/minimal/full, plus the namespaced controls
+%   ptlayout/ptnolayout, ptcontent/ptnocontent, and ptruntime/ptnoruntime
+% The class is deliberately single-column; twocolumn is not supported.
 
 % Document metadata
 \title{Informe Técnico del Proyecto}
 \titlesub{Sistema de Gestión Académica}
 \titlesubsub{Informe Final}
+% \date{2026-08-29}  % Optional; omitted means the current localized date
 
 % Version control
 \version{1.0}
@@ -32,28 +39,33 @@
 % Academic/Class information (optional)
 \classcode{IWI-131}
 \classname{Programación}
-\classsemester{Primer Semestre 2025}
+\classsemester{Primer Semestre 2026}
 
 % Institution information (optional)
+% \workgroup{Grupo de Investigación}
 \department{Departamento de Informática}
 \school{Escuela de Ingeniería}
 \university{Universidad Técnica Federico Santa María}
+
+% Corporate reports can use this hierarchy instead of the institutional one:
+% \corporationdepartment{Departamento de Tecnología}
+% \corporation{Empresa Ejemplo}
 
 \begin{document}
 
 \maketitle
 
-% Table of contents
+% Table of contents and conditional lists of registered/captioned entries
 \tableofcontents
-\ptlistoffigures  % Only shown if figures exist
-\ptlistoftables   % Only shown if tables exist
-\ptlistofcodes    % Only shown if code listings exist
+\ptlistoffigures
+\ptlistoftables
+\ptlistofcodes
 
 \section{Introducción}
 
-Esta es una plantilla completa que demuestra todas las capacidades de la clase
-\inlinecode{pt-report}. El documento está configurado en formato de una columna
-con márgenes de 1 pulgada y cada sección comienza en una nueva página.
+Esta es una plantilla representativa que demuestra las capacidades principales
+de la clase \inlinecode{pt-report}. El documento está configurado en formato de
+una columna con márgenes de 63pt y cada sección comienza en una nueva página.
 
 \subsection{Características Principales}
 
@@ -62,7 +74,7 @@ de \LaTeX{} con las siguientes características:
 
 \begin{itemize}
     \item Diseño profesional de una columna con márgenes cómodos
-    \item Generación automática de página de título
+    \item Portada generada explícitamente mediante \inlinecode{\string\maketitle}
     \item Gestión avanzada de autores con afiliaciones
     \item Control de versiones y numeración de compilaciones
     \item Saltos de página automáticos entre secciones
@@ -79,7 +91,13 @@ El documento puede configurarse con diferentes opciones:
     \item \textbf{Idiomas:} spanish, english, portuguese, french
     \item \textbf{Código:} nominted (desactiva minted)
     \item \textbf{Tamaño de fuente:} 10pt, 11pt, 12pt (por defecto)
+    \item \textbf{Caras:} oneside (por defecto) o twoside
+    \item \textbf{Columnas:} siempre una; twocolumn no está soportado
 \end{enumerate}
+
+Con oneside, la portada es la página 1 y el contenido comienza en la página 2.
+Con twoside, el reverso de la portada se reserva como página 2 en blanco y el
+contenido comienza en la página 3.
 
 \subsection{Estructura del Informe}
 
@@ -126,8 +144,9 @@ Diversos autores han abordado problemas similares:
 
 Las principales herramientas y tecnologías utilizadas se resumen en la siguiente tabla:
 
-\begin{center}
-    \begin{tblr}{colspec={|l|l|l|}}
+\begin{table}[htbp]
+    \centering
+    \begin{tblr}{colspec={|X[l]|C{0.22\linewidth}|C{0.14\linewidth}|}}
         \hline
         \tableheader
         Categoría            & Herramienta & Versión \\
@@ -144,7 +163,9 @@ Las principales herramientas y tecnologías utilizadas se resumen en la siguient
         Contenedores         & Docker      & 24.0    \\
         \hline
     \end{tblr}
-\end{center}
+    \caption{Herramientas y tecnologías utilizadas}
+    \label{tab:herramientas}
+\end{table}
 
 \section{Metodología}
 
@@ -204,29 +225,29 @@ La implementación siguió un enfoque iterativo e incremental. A continuación
 se muestra un ejemplo del código principal del servidor:
 
 \begin{ptprintcode}{python}
-    from flask import Flask, jsonify, request
-    from flask_cors import CORS
-    from database import db
-    from models import User, Course
+from flask import Flask, jsonify
+from flask_cors import CORS
+from database import db
+from models import User, Course
 
-    app = Flask(__name__)
-    CORS(app)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/academic'
-    db.init_app(app)
+app = Flask(__name__)
+CORS(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/academic'
+db.init_app(app)
 
-    @app.route('/api/users', methods=['GET'])
-    def get_users():
-    """Obtiene la lista de todos los usuarios"""
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    """Obtiene la lista de todos los usuarios."""
     users = User.query.all()
     return jsonify([user.to_dict() for user in users])
 
-    @app.route('/api/courses', methods=['GET'])
-    def get_courses():
-    """Obtiene la lista de todos los cursos"""
+@app.route('/api/courses', methods=['GET'])
+def get_courses():
+    """Obtiene la lista de todos los cursos."""
     courses = Course.query.all()
     return jsonify([course.to_dict() for course in courses])
 
-    if __name__ == '__main__':
+if __name__ == '__main__':
     app.run(debug=True, port=5000)
 \end{ptprintcode}
 
@@ -248,8 +269,9 @@ La cobertura de código alcanzada fue del 87\%, superando el objetivo del 80\%.
 
 Los resultados cuantitativos del proyecto se resumen en la siguiente tabla:
 
-\begin{center}
-    \begin{tblr}{colspec={|l|c|c|c|}}
+\begin{table}[htbp]
+    \centering
+    \begin{tblr}{colspec={|X[l]|C{0.16\linewidth}|C{0.16\linewidth}|C{0.18\linewidth}|}}
         \hline
         \tableheader
         Métrica                  & Objetivo & Obtenido & Cumplimiento                        \\
@@ -266,7 +288,9 @@ Los resultados cuantitativos del proyecto se resumen en la siguiente tabla:
         Líneas de código         & N/A      & 12,500   & N/A                                 \\
         \hline
     \end{tblr}
-\end{center}
+    \caption{Resultados cuantitativos del proyecto}
+    \label{tab:resultados-cuantitativos}
+\end{table}
 
 Todos los objetivos cuantitativos fueron cumplidos satisfactoriamente.
 

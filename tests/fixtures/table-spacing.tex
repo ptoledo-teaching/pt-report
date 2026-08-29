@@ -1,0 +1,23 @@
+\documentclass[oneside,nominted]{pt-report}
+
+\begin{document}
+
+\noindent PTSTANDALONEBEFORE\par
+\begin{tblr}{hlines,vlines,colspec={X}}
+    PTSTANDALONECELL
+\end{tblr}
+\noindent PTSTANDALONEAFTER\par
+
+\newpage
+
+\noindent PTFLOATBEFORE\par
+\begin{table}[H]
+    \centering
+    \begin{tblr}{hlines,vlines,colspec={X}}
+        PTFLOATCELL
+    \end{tblr}
+    \caption{PTFLOATCAPTION}
+\end{table}
+\noindent PTFLOATAFTER\par
+
+\end{document}

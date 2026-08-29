@@ -1,0 +1,12 @@
+% Shared body for module, language, and base-font-size option checks.
+\makeatletter
+\AtBeginDocument{%
+  \typeout{PT-TEST-MODULES=\ptiflayoutloaded{1}{0}\ptifcontentloaded{1}{0}\ptifruntimeloaded{1}{0}}%
+  \typeout{PT-TEST-FONTSIZE=\f@size}%
+  \typeout{PT-TEST-LANGUAGE=\languagename}%
+}
+\makeatother
+
+\begin{document}
+\ptinstruction{PTLANGUAGEMARKER}
+\end{document}
