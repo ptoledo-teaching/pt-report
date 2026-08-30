@@ -36,7 +36,8 @@ and `notitlepage`, module composition, all four
 languages, 10/11/12pt sizes, and the public `L`/`C`/`R`/`X` table-column
 contract. PDF bounding boxes also verify that a standalone `tblr` has vertical
 separation while the same environment inside a `table` float does not receive
-duplicate internal spacing.
+duplicate internal spacing, including when it is wrapped in `center`. The
+optional Minted run verifies the matching code-to-caption spacing.
 
 Module composition covers `coreonly`, `minimal`, `full`, the namespaced negative
 options `ptnolayout`/`ptnocontent`/`ptnoruntime`, and restoration from

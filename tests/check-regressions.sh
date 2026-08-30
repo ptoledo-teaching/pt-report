@@ -590,6 +590,22 @@ for test_engine in "${test_engines[@]}"; do
         assert_minimum_page_count "$COMPILED_PDF" 5
         assert_pdf_contains "$COMPILED_PDF" 'Informe Técnico del Proyecto'
         assert_pdf_contains "$COMPILED_PDF" 'Reflexión Final'
+
+        compile_success \
+            "$test_engine" \
+            caption-spacing-minted.tex \
+            caption-spacing-minted \
+            caption-spacing-minted \
+            2 \
+            "$test_fixture_dir" \
+            -shell-escape
+        assert_page_count "$COMPILED_PDF" 1
+        test_minted_caption_bbox=$(create_page_bbox "$COMPILED_PDF" 1)
+        assert_marker_gap_at_most \
+            "$test_minted_caption_bbox" \
+            PTCODECONTENT \
+            PTCODECAPTION \
+            18
     fi
 
     compile_success \
@@ -652,7 +668,7 @@ for test_engine in "${test_engines[@]}"; do
     compile_success \
         "$test_engine" table-spacing.tex table-spacing table-spacing 1 \
         "$test_fixture_dir"
-    assert_page_count "$COMPILED_PDF" 2
+    assert_page_count "$COMPILED_PDF" 3
     test_standalone_table_bbox=$(create_page_bbox "$COMPILED_PDF" 1)
     assert_marker_gap_at_least \
         "$test_standalone_table_bbox" \
@@ -674,6 +690,17 @@ for test_engine in "${test_engines[@]}"; do
         "$test_float_table_bbox" \
         PTFLOATCELL \
         PTFLOATCAPTION \
+        18
+    test_center_float_table_bbox=$(create_page_bbox "$COMPILED_PDF" 3)
+    assert_marker_gap_at_most \
+        "$test_center_float_table_bbox" \
+        PTCENTERFLOATBEFORE \
+        PTCENTERFLOATCELL \
+        18
+    assert_marker_gap_at_most \
+        "$test_center_float_table_bbox" \
+        PTCENTERFLOATCELL \
+        PTCENTERFLOATCAPTION \
         18
 
     for test_option_fixture in "${option_fixtures[@]}"; do
